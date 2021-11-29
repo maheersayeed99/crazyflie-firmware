@@ -53,6 +53,10 @@ void attitudeControllerCorrectRatePID(
        float rollRateActual, float pitchRateActual, float yawRateActual,
        float rollRateDesired, float pitchRateDesired, float yawRateDesired);
 
+
+void attitudeControllerDirectPID(
+    float* thrust, attitude_t* attitude, setpoint_t* setpoint,const state_t* state);
+
 /**
  * Reset controller roll attitude PID
  */
