@@ -135,6 +135,32 @@ void attitudeControllerCorrectAttitudePID(
   *yawRateDesired = pidUpdate(&pidYaw, eulerYawActual, false);
 }
 
+void attitudeControllerDirectAttitudePID(
+       float eulerRollActual, float eulerPitchActual, float eulerYawActual,
+       float eulerRollDesired, float eulerPitchDesired, float eulerYawDesired)
+{
+  pidSetDesired(&pidRoll, eulerRollDesired);
+  rollOutput = saturateSignedInt16(pidUpdate(&pidRoll, eulerRollActual, true));
+
+  // Update PID for pitch axis
+  pidSetDesired(&pidPitch, eulerPitchDesired);
+  pitchOutput = saturateSignedInt16(pidUpdate(&pidPitch, eulerPitchActual, true));
+
+  // Update PID for yaw axis
+  float yawError;
+  yawError = eulerYawDesired - eulerYawActual;
+  if (yawError > 180.0f)
+    yawError -= 360.0f;
+  else if (yawError < -180.0f)
+    yawError += 360.0f;
+  pidSetError(&pidYaw, yawError);
+  yawOutput = saturateSignedInt16(pidUpdate(&pidYaw, eulerYawActual, false));
+}
+
+
+
+
+
 void attitudeControllerResetRollAttitudePID(void)
 {
     pidReset(&pidRoll);

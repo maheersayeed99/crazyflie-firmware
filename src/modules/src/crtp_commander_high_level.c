@@ -304,26 +304,35 @@ void crtpCommanderHighLevelGetSetpoint(setpoint_t* setpoint, const state_t *stat
   }
 
   if (is_traj_eval_valid(&ev)) {
-    setpoint->position.x = ev.pos.x;
-    setpoint->position.y = ev.pos.y;
+    //setpoint->position.x = ev.pos.x;                //controller position
+    //setpoint->position.y = ev.pos.y;                
     setpoint->position.z = ev.pos.z;
-    setpoint->velocity.x = ev.vel.x;
-    setpoint->velocity.y = ev.vel.y;
-    setpoint->velocity.z = ev.vel.z;
-    setpoint->attitude.yaw = degrees(ev.yaw);
-    setpoint->attitudeRate.roll = degrees(ev.omega.x);
-    setpoint->attitudeRate.pitch = degrees(ev.omega.y);
-    setpoint->attitudeRate.yaw = degrees(ev.omega.z);
-    setpoint->mode.x = modeAbs;
-    setpoint->mode.y = modeAbs;
-    setpoint->mode.z = modeAbs;
-    setpoint->mode.roll = modeDisable;
-    setpoint->mode.pitch = modeDisable;
-    setpoint->mode.yaw = modeAbs;
-    setpoint->mode.quat = modeDisable;
-    setpoint->acceleration.x = ev.acc.x;
-    setpoint->acceleration.y = ev.acc.y;
-    setpoint->acceleration.z = ev.acc.z;
+    //setpoint->velocity.x = ev.vel.x;
+    //setpoint->velocity.y = ev.vel.y;
+    //setpoint->velocity.z = ev.vel.z;
+    //setpoint->attitude.yaw = degrees(ev.yaw);                 // controller orientation
+    //setpoint->attitudeRate.roll = degrees(ev.omega.x);
+    //setpoint->attitudeRate.pitch = degrees(ev.omega.y);
+    //setpoint->attitudeRate.yaw = degrees(ev.omega.z);
+    //setpoint->mode.x = modeAbs;                           // position control
+    //setpoint->mode.y = modeAbs;
+    //setpoint->mode.z = modeAbs;
+    //setpoint->mode.roll = modeDisable;
+    //setpoint->mode.pitch = modeDisable;
+    //setpoint->mode.yaw = modeAbs;
+    //setpoint->mode.quat = modeDisable;
+    //setpoint->acceleration.x = ev.acc.x;            // controller orientation
+    //setpoint->acceleration.y = ev.acc.y;
+    //setpoint->acceleration.z = ev.acc.z;
+
+    
+    // NEW ADDITION
+    
+    setpoint->mode.x = modeDisable;                 // attitude or attitude rate
+    setpoint->mode.y = modeDisable;
+    setpoint->mode.roll = modeAbs;                  // attitude
+    setpoint->mode.pitch = modeAbs;                 // attitude
+    setpoint->mode.yaw = modeVelocity;              // attitude rate
 
     // store the last setpoint
     pos = ev.pos;

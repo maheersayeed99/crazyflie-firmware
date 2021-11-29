@@ -195,21 +195,31 @@ void positionController(float* thrust, attitude_t *attitude, setpoint_t *setpoin
   float bodyvy = setpoint->velocity.y;
 
   // X, Y
-  if (setpoint->mode.x == modeAbs) {
+  if (setpoint->mode.x == modeAbs) {                  // if in position control
     setpoint->velocity.x = runPid(state->position.x, &this.pidX, setpoint->position.x, DT);
-  } else if (setpoint->velocity_body) {
-    setpoint->velocity.x = bodyvx * cosyaw - bodyvy * sinyaw;
+  } //else if (setpoint->velocity_body) {
+    //setpoint->velocity.x = bodyvx * cosyaw - bodyvy * sinyaw;
   }
-  if (setpoint->mode.y == modeAbs) {
+  if (setpoint->mode.y == modeAbs) {  // if in position control
     setpoint->velocity.y = runPid(state->position.y, &this.pidY, setpoint->position.y, DT);
-  } else if (setpoint->velocity_body) {
-    setpoint->velocity.y = bodyvy * cosyaw + bodyvx * sinyaw;
+  } //else if (setpoint->velocity_body) {
+    //setpoint->velocity.y = bodyvy * cosyaw + bodyvx * sinyaw;
   }
-  if (setpoint->mode.z == modeAbs) {
+  if (setpoint->mode.z == modeAbs) {  // if in position control
     setpoint->velocity.z = runPid(state->position.z, &this.pidZ, setpoint->position.z, DT);
   }
 
-  velocityController(thrust, attitude, setpoint, state);
+  // DISABLED VELOCITY CONTROLLER
+
+  //velocityController(thrust, attitude, setpoint, state);
+  
+  // MOVED THRUST TO HERE
+  float thrustRaw = runPid(state->position.z, &this.pidZ, setpoint->position.z, DT);    // thrust dependent on z position
+  // Scale the thrust and add feed forward term
+  *thrust = thrustRaw*thrustScale + this.thrustBase;
+  // Check for minimum thrust
+  if (*thrust < this.thrustMin) {
+    *thrust = this.thrustMin;
 }
 
 void velocityController(float* thrust, attitude_t *attitude, setpoint_t *setpoint,
@@ -232,13 +242,7 @@ void velocityController(float* thrust, attitude_t *attitude, setpoint_t *setpoin
   attitude->roll  = constrain(attitude->roll,  -rpLimit, rpLimit);
   attitude->pitch = constrain(attitude->pitch, -rpLimit, rpLimit);
 
-  // Thrust
-  float thrustRaw = runPid(state->velocity.z, &this.pidVZ, setpoint->velocity.z, DT);
-  // Scale the thrust and add feed forward term
-  *thrust = thrustRaw*thrustScale + this.thrustBase;
-  // Check for minimum thrust
-  if (*thrust < this.thrustMin) {
-    *thrust = this.thrustMin;
+  
   }
 }
 

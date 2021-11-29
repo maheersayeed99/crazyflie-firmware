@@ -119,11 +119,11 @@ void commanderGetSetpoint(setpoint_t *setpoint, const state_t *state)
   } else if ((currentTime - setpoint->timestamp) > COMMANDER_WDT_TIMEOUT_STABILIZE) {
     xQueueOverwrite(priorityQueue, &priorityDisable);
     // Leveling ...
-    setpoint->mode.x = modeDisable;
+    setpoint->mode.x = modeDisable;                 // attitude or attitude rate
     setpoint->mode.y = modeDisable;
-    setpoint->mode.roll = modeAbs;
-    setpoint->mode.pitch = modeAbs;
-    setpoint->mode.yaw = modeVelocity;
+    setpoint->mode.roll = modeAbs;                  // attitude
+    setpoint->mode.pitch = modeAbs;                 // attitude
+    setpoint->mode.yaw = modeVelocity;              // attitude rate
     setpoint->attitude.roll = 0;
     setpoint->attitude.pitch = 0;
     setpoint->attitudeRate.yaw = 0;
