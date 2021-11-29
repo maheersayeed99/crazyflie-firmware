@@ -57,7 +57,7 @@ void pidInit(PidObject* pid, const float desired, const float kp,
   }
 }
 
-float pidUpdate(PidObject* pid, const float measured, const bool updateError)
+float pidUpdate(PidObject* pid, const float measured, const bool updateError)       // CONTROL SIGNAL OUTPUTTED FOR EACH (YAAW, PITCH, ROLL)
 {
     float output = 0.0f;
 

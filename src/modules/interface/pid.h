@@ -30,32 +30,43 @@
 #include <stdbool.h>
 #include "filter.h"
 
-#define PID_ROLL_RATE_KP  250.0
+
+#define PID_THRUST_BASE  36000.0f                    // DEFINE BASE THRUST
+#define PID_THRUST_MIN 20000.0f  
+
+#define PID_THRUST_RATE_KP  250.0                       // KP, KD, KI for thrust
+#define PID_THRUST_RATE_KI  500.0
+#define PID_THRUST_RATE_KD  2.5
+#define PID_THRUST_RATE_INTEGRATION_LIMIT    33.3
+
+
+
+#define PID_ROLL_RATE_KP  250.0                            // KP, KD, KI for roll
 #define PID_ROLL_RATE_KI  500.0
 #define PID_ROLL_RATE_KD  2.5
 #define PID_ROLL_RATE_INTEGRATION_LIMIT    33.3
 
-#define PID_PITCH_RATE_KP  250.0
+#define PID_PITCH_RATE_KP  250.0                        // KP, KD, KI for pitch
 #define PID_PITCH_RATE_KI  500.0
 #define PID_PITCH_RATE_KD  2.5
 #define PID_PITCH_RATE_INTEGRATION_LIMIT   33.3
 
-#define PID_YAW_RATE_KP  120.0
+#define PID_YAW_RATE_KP  120.0                          // KP, KD, KI for yaw
 #define PID_YAW_RATE_KI  16.7
 #define PID_YAW_RATE_KD  0.0
 #define PID_YAW_RATE_INTEGRATION_LIMIT     166.7
 
-#define PID_ROLL_KP  6.0
+#define PID_ROLL_KP  6.0                                //unused
 #define PID_ROLL_KI  3.0
 #define PID_ROLL_KD  0.0
 #define PID_ROLL_INTEGRATION_LIMIT    20.0
 
-#define PID_PITCH_KP  6.0
+#define PID_PITCH_KP  6.0                               //unused
 #define PID_PITCH_KI  3.0
 #define PID_PITCH_KD  0.0
 #define PID_PITCH_INTEGRATION_LIMIT   20.0
 
-#define PID_YAW_KP  6.0
+#define PID_YAW_KP  6.0                                 //unused
 #define PID_YAW_KI  1.0
 #define PID_YAW_KD  0.35
 #define PID_YAW_INTEGRATION_LIMIT     360.0

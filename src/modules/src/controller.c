@@ -44,7 +44,8 @@ void controllerInit(ControllerType controller) {
     currentController = forcedController;
   }
 
-  initController();
+  initController();         // controllerPidInit()  which is attitudecontroller and position controller init()
+                            // position init initializes 6 pidcontrollers for xyz, xodt,ydot,zdot
 
   DEBUG_PRINT("Using %s (%d) controller\n", controllerGetName(), currentController);
 }
@@ -54,14 +55,14 @@ ControllerType getControllerType(void) {
 }
 
 static void initController() {
-  controllerFunctions[currentController].init();
+  controllerFunctions[currentController].init();            // controllerPidInit()
 }
 
 bool controllerTest(void) {
-  return controllerFunctions[currentController].test();
+  return controllerFunctions[currentController].test();         //controllerPIDtest()       which is just the attitude controller test 
 }
 
-void controller(control_t *control, setpoint_t *setpoint, const sensorData_t *sensors, const state_t *state, const uint32_t tick) {
+void controller(control_t *control, setpoint_t *setpoint, const sensorData_t *sensors, const state_t *state, const uint32_t tick) {         // This function is used in main loop
   controllerFunctions[currentController].update(control, setpoint, sensors, state, tick);
 }
 
