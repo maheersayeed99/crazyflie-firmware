@@ -189,22 +189,22 @@ void positionController(float* thrust, attitude_t *attitude, setpoint_t *setpoin
   // this value is below 0.5
   this.pidZ.pid.outputLimit = fmaxf(zVelMax, 0.5f)  * velMaxOverhead;
 
-  float cosyaw = cosf(state->attitude.yaw * (float)M_PI / 180.0f);
-  float sinyaw = sinf(state->attitude.yaw * (float)M_PI / 180.0f);
-  float bodyvx = setpoint->velocity.x;
-  float bodyvy = setpoint->velocity.y;
+  //float cosyaw = cosf(state->attitude.yaw * (float)M_PI / 180.0f);
+  //float sinyaw = sinf(state->attitude.yaw * (float)M_PI / 180.0f);
+  //float bodyvx = setpoint->velocity.x;
+  //float bodyvy = setpoint->velocity.y;
 
   // X, Y
   if (setpoint->mode.x == modeAbs) {                  // if in position control
     setpoint->velocity.x = runPid(state->position.x, &this.pidX, setpoint->position.x, DT);
   } //else if (setpoint->velocity_body) {
     //setpoint->velocity.x = bodyvx * cosyaw - bodyvy * sinyaw;
-  }
+  //}
   if (setpoint->mode.y == modeAbs) {  // if in position control
     setpoint->velocity.y = runPid(state->position.y, &this.pidY, setpoint->position.y, DT);
   } //else if (setpoint->velocity_body) {
     //setpoint->velocity.y = bodyvy * cosyaw + bodyvx * sinyaw;
-  }
+  //}
   if (setpoint->mode.z == modeAbs) {  // if in position control
     setpoint->velocity.z = runPid(state->position.z, &this.pidZ, setpoint->position.z, DT);
   }
@@ -220,6 +220,7 @@ void positionController(float* thrust, attitude_t *attitude, setpoint_t *setpoin
   // Check for minimum thrust
   if (*thrust < this.thrustMin) {
     *thrust = this.thrustMin;
+  }
 }
 
 void velocityController(float* thrust, attitude_t *attitude, setpoint_t *setpoint,
